@@ -1,5 +1,5 @@
-import { createZodDto } from "@anatine/zod-nestjs";
-import { CreateGallerySchema } from "./create-gallery.dto";
+import { createZodDto } from '@anatine/zod-nestjs';
+import { CreateGallerySchema } from './create-gallery.dto';
 
 export const UpdateGallerySchema = CreateGallerySchema.partial();
 

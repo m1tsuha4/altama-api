@@ -44,7 +44,11 @@ export class GalleryService {
     return gallery;
   }
 
-  async update(id: string, updateGalleryDto: UpdateGalleryDto, image?: Express.Multer.File) {
+  async update(
+    id: string,
+    updateGalleryDto: UpdateGalleryDto,
+    image?: Express.Multer.File,
+  ) {
     const gallery = await this.findOne(id);
 
     const uploadRoot = join(process.cwd(), 'uploads', 'gallery');
@@ -55,7 +59,7 @@ export class GalleryService {
         unlinkSync(filePath);
       }
     }
-    
+
     return this.prisma.webGallery.update({
       where: { id },
       data: {
