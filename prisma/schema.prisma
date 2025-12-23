@@ -32,3 +32,89 @@ model TokenBlacklist {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model GrowWithUs {
+  id        String    @id @default(cuid())
+  title     String?
+  overview  String
+  location  String?
+  type      String?
+  date      DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  requirements Requirement[]
+  applications Application[]
+}
+
+model Requirement {
+  id           String     @id @default(cuid())
+  growWithUsId String
+  growWithUs   GrowWithUs @relation(fields: [growWithUsId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Application {
+  id           String     @id @default(cuid())
+  growWithUsId String
+  growWithUs   GrowWithUs @relation(fields: [growWithUsId], references: [id], onDelete: Cascade)
+  name         String
+  email        String
+  phone        String
+  location     String?
+  education    String?
+  experience   String?
+  skills       String?
+  cv           String?
+  portfolio    String?
+  resume       String?
+  certificate  String?
+  language     String?
+  salary       String?
+  available    String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Article {
+  id             String    @id @default(cuid())
+  title          String
+  slug           String    @unique
+  excerpt        String?   @db.Text
+  contentHtml    String    @db.Text
+  primaryImage   String?
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  metaTags       Json?
+  author         String?
+  publishedAt    DateTime? @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model ImageArticle {
+  id        String   @id @default(cuid())
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WebGallery {
+  id        String   @id @default(cuid())
+  title     String?
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Instagram {
+  id        String   @id @default(cuid())
+  title     String?
+  link      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
