@@ -53,6 +53,16 @@ export class CareerService {
     });
   }
 
+  async careerHome() {
+    return this.prisma.career.findMany({
+      select: {
+        id: true,
+        title: true,
+        overview: true,
+      },
+    });
+  }
+
   async findOne(id: string) {
     const career = await this.prisma.career.findUnique({
       where: { id },
