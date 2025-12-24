@@ -9,6 +9,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformResponseInterceptor } from './common/interceptors/transform-response.interceptor';
 import { GalleryModule } from './gallery/gallery.module';
 import { InstagramModule } from './instagram/instagram.module';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { InstagramModule } from './instagram/instagram.module';
     AuthModule,
     GalleryModule,
     InstagramModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [
