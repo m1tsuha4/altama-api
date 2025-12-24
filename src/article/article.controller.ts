@@ -1,15 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UploadedFile } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
+import { CreateArticleDto, CreateArticleSchema } from './dto/create-article.dto';
+import { UpdateArticleDto, UpdateArticleSchema } from './dto/update-article.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-guard.auth';
+import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { UploadImageInterceptor } from 'src/common/interceptors/multer-config.interceptors';
+import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
+import { file } from 'zod/v4';
 
 @Controller('article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @UploadImageInterceptor('primary-image')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', example: 'Tekiro Mechanic Competition 2023' },
+        excerpt: { type: 'string', example: 'Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek' },
+        contentHtml: { type: 'string', example: '<p>Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek</p>' },
+        file: { type: 'string', format: 'binary' },
+        seoTitle: { type: 'string', example: 'Tekiro Mechanic Competition 2023' },
+        seoDescription: { type: 'string', example: 'Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek' },
+        seoKeywords: { type: 'string', example: 'Altama' },
+        metaTags: {
+          type: 'object',
+          example: {
+            title: 'Tekiro Mechanic Competition 2023',
+            description: 'Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek',
+            keywords: 'Tools',
+          },
+        },
+        author: { type: 'string', example: 'Altama' },
+        publishedAt: { type: 'string', example: '2025-12-24T07:33:49.000Z' },
+      }
+    }
+  })
   @Post()
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articleService.create(createArticleDto);
+  create(@Body(new ZodValidationPipe(CreateArticleSchema)) createArticleDto: CreateArticleDto, @UploadedFile() file: Express.Multer.File) {
+    return this.articleService.create(createArticleDto, file);
   }
 
   @Get()
@@ -19,16 +52,46 @@ export class ArticleController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.articleService.findOne(+id);
+    return this.articleService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @UploadImageInterceptor('primary-image')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', example: 'Tekiro Mechanic Competition 2023' },
+        excerpt: { type: 'string', example: 'Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek' },
+        contentHtml: { type: 'string', example: '<p>Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek</p>' },
+        file: { type: 'string', format: 'binary' },
+        seoTitle: { type: 'string', example: 'Tekiro Mechanic Competition 2023' },
+        seoDescription: { type: 'string', example: 'Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek' },
+        seoKeywords: { type: 'string', example: 'Altama' },
+        metaTags: {
+          type: 'object',
+          example: {
+            title: 'Tekiro Mechanic Competition 2023',
+            description: 'Tekiro Kembali Gelar Lomba Otomotif SMK Terbesar se-Jabodetabek',
+            keywords: 'Tools',
+          },
+        },
+        author: { type: 'string', example: 'Altama' },
+        publishedAt: { type: 'string', example: '2025-12-24T07:33:49.000Z' },
+      }
+    }
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articleService.update(+id, updateArticleDto);
+  update(@Param('id') id: string, @Body(new ZodValidationPipe(UpdateArticleSchema)) updateArticleDto: UpdateArticleDto, @UploadedFile() file: Express.Multer.File) {
+    return this.articleService.update(id, updateArticleDto, file);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.articleService.remove(+id);
+    return this.articleService.remove(id);
   }
 }
