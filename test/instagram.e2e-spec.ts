@@ -31,62 +31,60 @@ describe('InstagramController (e2e)', () => {
     const email = `test-${Math.random().toString(36).substring(7)}@example.com`;
     const password = 'password123';
 
-    
     // We assume there's a registered user or we create one via Prisma
     // For simplicity, let's try to create one directly if we can, or just use an auth endpoint if available
     // Checking schema: User has email, password, name.
     // We'll create a user directly in DB to avoid relying on User registration endpoint specifics if not known
     // User creation via Prisma removed to avoid conflict with HTTP request below.
 
-
     // To get a valid token, we can either:
     // 1. Login via HTTP (needs correct password hash in DB which is hard to mock without bcrypt)
     // 2. Mock the AuthGuard (but we want full integration)
     // 3. Generate a token using JwtService from the module
-    
+
     // Let's try to use the AuthController's login or just generate a token.
-    // Since I don't have the bcrypt hash ready and don't want to import bcrypt just for this, 
+    // Since I don't have the bcrypt hash ready and don't want to import bcrypt just for this,
     // We will use the proper auth flow via HTTP requests
 
-    
     // Let's try creating a user via POST /user
     // But we need to know the DTO.
     // Let's go with a safer bet: Mocking the guard is normally generic, but user asked for "functional testing".
     // I'll try to get JwtService. If it fails, I'll need another plan.
-    // OR create a user with a known hash. 
+    // OR create a user with a known hash.
     // 'password123' bcrypt hash is roughly: $2a$10$ep/User/PasswordHash... (dummy)
     // Let's use `npm install bcryptjs` logic implicitly? No, I can't.
-    
+
     // Actually, I can just CREATE the user via POST /user, then login via POST /auth/login.
     // This tests the whole flow.
-    
-    const userResponse = await request(app.getHttpServer())
-      .post('/user')
-      .send({
-        email: email,
-        password: password,
-        name: 'Test Instance'
-      });
-      
+
+    const userResponse = await request(app.getHttpServer()).post('/user').send({
+      email: email,
+      password: password,
+      name: 'Test Instance',
+    });
+
     console.log('User Create Status:', userResponse.status);
     console.log('User Create Body:', JSON.stringify(userResponse.body));
 
     if (userResponse.status === 201 || userResponse.status === 200) {
-       const loginResponse = await request(app.getHttpServer())
-         .post('/auth/login')
-         .send({
-           email: email,
-           password: password
-         });
-       
-       console.log('Login Status:', loginResponse.status);
-       console.log('Login Body:', JSON.stringify(loginResponse.body));
+      const loginResponse = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({
+          email: email,
+          password: password,
+        });
 
-       const body = loginResponse.body;
-       // Handle wrapped response if any (e.g. { data: { accessToken: ... } })
-       accessToken = body.accessToken || (body.data && body.data.accessToken) || (body.data && body.data.token); 
+      console.log('Login Status:', loginResponse.status);
+      console.log('Login Body:', JSON.stringify(loginResponse.body));
+
+      const body = loginResponse.body;
+      // Handle wrapped response if any (e.g. { data: { accessToken: ... } })
+      accessToken =
+        body.accessToken ||
+        (body.data && body.data.accessToken) ||
+        (body.data && body.data.token);
     } else {
-        console.error('Failed to create user');
+      console.error('Failed to create user');
     }
   });
 
@@ -95,14 +93,14 @@ describe('InstagramController (e2e)', () => {
     if (fs.existsSync(testImagePath)) {
       fs.unlinkSync(testImagePath);
     }
-    
+
     if (createdId) {
-        await prisma.instagram.deleteMany({ where: { id: createdId } });
+      await prisma.instagram.deleteMany({ where: { id: createdId } });
     }
-    
+
     // Optional: Delete the test user
     // await prisma.user.delete...
-    
+
     await app.close();
   });
 
@@ -121,7 +119,7 @@ describe('InstagramController (e2e)', () => {
 
     expect(response.body).toBeDefined();
     // Adjust expectation based on your transformation interceptor
-    const data = response.body.data || response.body; 
+    const data = response.body.data || response.body;
     expect(data.title).toBe('Test Caption');
     // expect(data.image).toContain(testImageName); // Multer renames it, so this fails.
 
@@ -156,7 +154,7 @@ describe('InstagramController (e2e)', () => {
       .patch(`/instagram/${createdId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
-        title: 'Updated Caption'
+        title: 'Updated Caption',
       })
       .expect(200); // or 201 depending on nestjs default for patch
 

@@ -8,20 +8,28 @@ import { existsSync, unlinkSync } from 'fs';
 
 @Injectable()
 export class ArticleService {
-  constructor(private readonly prisma: PrismaService){}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(createArticleDto: CreateArticleDto, image?: Express.Multer.File) {
-    const slug = createArticleDto.slug ?? slugify(createArticleDto.title, { strict: true, lower: true });
-    const slugExist = await this.prisma.article.findUnique({where: {slug}});
+  async create(
+    createArticleDto: CreateArticleDto,
+    image?: Express.Multer.File,
+  ) {
+    const slug =
+      createArticleDto.slug ??
+      slugify(createArticleDto.title, { strict: true, lower: true });
+    const slugExist = await this.prisma.article.findUnique({ where: { slug } });
     if (slugExist) {
       throw new BadRequestException('Slug already exists');
     }
 
-    let metaTags:any = undefined;
-    if(createArticleDto.metaTags) {
-      try{
-        metaTags = typeof createArticleDto.metaTags === 'string' ? JSON.parse(createArticleDto.metaTags) : createArticleDto.metaTags;
-      }catch(e){
+    let metaTags: any = undefined;
+    if (createArticleDto.metaTags) {
+      try {
+        metaTags =
+          typeof createArticleDto.metaTags === 'string'
+            ? JSON.parse(createArticleDto.metaTags)
+            : createArticleDto.metaTags;
+      } catch (e) {
         throw new BadRequestException('Invalid metaTags');
       }
     }
@@ -32,8 +40,8 @@ export class ArticleService {
         slug,
         metaTags,
         primaryImage: image ? `/uploads/primary-image/${image.filename}` : null,
-      }
-    })
+      },
+    });
   }
 
   async findAll() {
@@ -54,8 +62,8 @@ export class ArticleService {
       },
       orderBy: {
         createdAt: 'desc',
-      }
-    })
+      },
+    });
   }
 
   async findAllImageArticle() {
@@ -133,27 +141,36 @@ export class ArticleService {
         metaTags: true,
         author: true,
         publishedAt: true,
-      }
-    })
+      },
+    });
     if (!article) {
       throw new BadRequestException('Article not found');
     }
     return article;
   }
 
-  async update(id: string, updateArticleDto: UpdateArticleDto, image?: Express.Multer.File) {
+  async update(
+    id: string,
+    updateArticleDto: UpdateArticleDto,
+    image?: Express.Multer.File,
+  ) {
     const article = await this.findOne(id);
-    const slug = updateArticleDto.title ? slugify(updateArticleDto.title, { strict: true, lower: true }) : article.slug;
-    const slugExist = await this.prisma.article.findUnique({where: {slug}});
+    const slug = updateArticleDto.title
+      ? slugify(updateArticleDto.title, { strict: true, lower: true })
+      : article.slug;
+    const slugExist = await this.prisma.article.findUnique({ where: { slug } });
     if (slugExist && slugExist.id !== id) {
       throw new BadRequestException('Slug already exists');
     }
 
-    let metaTags:any = undefined;
-    if(updateArticleDto.metaTags) {
-      try{
-        metaTags = typeof updateArticleDto.metaTags === 'string' ? JSON.parse(updateArticleDto.metaTags) : updateArticleDto.metaTags;
-      }catch(e){
+    let metaTags: any = undefined;
+    if (updateArticleDto.metaTags) {
+      try {
+        metaTags =
+          typeof updateArticleDto.metaTags === 'string'
+            ? JSON.parse(updateArticleDto.metaTags)
+            : updateArticleDto.metaTags;
+      } catch (e) {
         throw new BadRequestException('Invalid metaTags');
       }
     }
@@ -173,9 +190,11 @@ export class ArticleService {
         ...updateArticleDto,
         slug,
         metaTags,
-        primaryImage: image ? `/uploads/primary-image/${image.filename}` : article.primaryImage,
-      }
-    })
+        primaryImage: image
+          ? `/uploads/primary-image/${image.filename}`
+          : article.primaryImage,
+      },
+    });
   }
 
   async remove(id: string) {

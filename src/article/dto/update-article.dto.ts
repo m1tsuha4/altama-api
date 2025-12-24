@@ -1,5 +1,5 @@
-import { createZodDto } from "@anatine/zod-nestjs";
-import { CreateArticleSchema } from "./create-article.dto";
+import { createZodDto } from '@anatine/zod-nestjs';
+import { CreateArticleSchema } from './create-article.dto';
 
 export const UpdateArticleSchema = CreateArticleSchema.partial();
 

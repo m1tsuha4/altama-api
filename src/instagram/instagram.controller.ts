@@ -10,8 +10,14 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { InstagramService } from './instagram.service';
-import { CreateInstagramDto, CreateInstagramSchema } from './dto/create-instagram.dto';
-import { UpdateInstagramDto, UpdateInstagramSchema } from './dto/update-instagram.dto';
+import {
+  CreateInstagramDto,
+  CreateInstagramSchema,
+} from './dto/create-instagram.dto';
+import {
+  UpdateInstagramDto,
+  UpdateInstagramSchema,
+} from './dto/update-instagram.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-guard.auth';
 import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { UploadImageInterceptor } from 'src/common/interceptors/multer-config.interceptors';
@@ -36,7 +42,11 @@ export class InstagramController {
     },
   })
   @Post()
-  create(@Body(new ZodValidationPipe(CreateInstagramSchema)) createInstagramDto: CreateInstagramDto, @UploadedFile() file?: Express.Multer.File) {
+  create(
+    @Body(new ZodValidationPipe(CreateInstagramSchema))
+    createInstagramDto: CreateInstagramDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
     return this.instagramService.create(createInstagramDto, file);
   }
 
@@ -67,7 +77,9 @@ export class InstagramController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body(new ZodValidationPipe(UpdateInstagramSchema)) updateInstagramDto: UpdateInstagramDto, @UploadedFile() file?: Express.Multer.File
+    @Body(new ZodValidationPipe(UpdateInstagramSchema))
+    updateInstagramDto: UpdateInstagramDto,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
     return this.instagramService.update(id, updateInstagramDto, file);
   }
