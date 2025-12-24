@@ -50,6 +50,43 @@ export class ArticleController {
     return this.articleService.findAll();
   }
 
+  @Get('image-article')
+  findAllImageArticle() {
+    return this.articleService.findAllImageArticle();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @UploadImageInterceptor('article-image')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Post('upload-image')
+  uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return this.articleService.uploadImage(file);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Delete('image/:id')
+  removeImage(@Param('id') id: string) {
+    return this.articleService.removeImage(id);
+  }
+
+  @Get('latest')
+  findLatestArticle() {
+    return this.articleService.findLatestArticle();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.articleService.findOne(id);

@@ -58,6 +58,65 @@ export class ArticleService {
     })
   }
 
+  async findAllImageArticle() {
+    return await this.prisma.imageArticle.findMany({
+      select: {
+        id: true,
+        url: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async uploadImage(image: Express.Multer.File) {
+    return await this.prisma.imageArticle.create({
+      data: {
+        url: `/uploads/article-image/${image.filename}`,
+      },
+    });
+  }
+
+  async removeImage(id: string) {
+    const image = await this.prisma.imageArticle.findUnique({ where: { id } });
+    if (!image) {
+      throw new BadRequestException('Image not found');
+    }
+    const uploadRoot = join(process.cwd(), 'uploads', 'article-image');
+    if (image.url) {
+      const fileName = basename(image.url);
+      const filePath = join(uploadRoot, fileName);
+      if (existsSync(filePath)) {
+        unlinkSync(filePath);
+      }
+    }
+    return await this.prisma.imageArticle.delete({ where: { id } });
+  }
+
+  async findLatestArticle() {
+    return await this.prisma.article.findMany({
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        contentHtml: true,
+        primaryImage: true,
+        seoTitle: true,
+        seoDescription: true,
+        seoKeywords: true,
+        metaTags: true,
+        author: true,
+        publishedAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 3,
+    });
+  }
+
   async findOne(id: string) {
     const article = await this.prisma.article.findUnique({
       where: { id },
