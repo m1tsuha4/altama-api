@@ -33,7 +33,7 @@ model TokenBlacklist {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model GrowWithUs {
+model Career {
   id        String    @id @default(cuid())
   title     String?
   overview  String
@@ -48,35 +48,35 @@ model GrowWithUs {
 }
 
 model Requirement {
-  id           String     @id @default(cuid())
-  growWithUsId String
-  growWithUs   GrowWithUs @relation(fields: [growWithUsId], references: [id], onDelete: Cascade)
-  title        String
-  description  String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id          String   @id @default(cuid())
+  careerId    String
+  career      Career   @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Application {
-  id           String     @id @default(cuid())
-  growWithUsId String
-  growWithUs   GrowWithUs @relation(fields: [growWithUsId], references: [id], onDelete: Cascade)
-  name         String
-  email        String
-  phone        String
-  location     String?
-  education    String?
-  experience   String?
-  skills       String?
-  cv           String?
-  portfolio    String?
-  resume       String?
-  certificate  String?
-  language     String?
-  salary       String?
-  available    String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id          String   @id @default(cuid())
+  careerId    String
+  career      Career   @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  name        String
+  email       String
+  phone       String
+  location    String?
+  education   String?
+  experience  String?
+  skills      String?
+  cv          String?
+  portfolio   String?
+  resume      String?
+  certificate String?
+  language    String?
+  salary      String?
+  available   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Article {
