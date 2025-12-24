@@ -80,12 +80,13 @@ export function UploadImagesInterceptor(folderName: string, maxCount = 3) {
 export function UploadPdfInterceptor(
   folderName: string = 'pdfs',
   maxSizeBytes = 10 * 1024 * 1024,
+  fieldName: string = 'file',
 ) {
   const folderPath = `./uploads/${folderName}`;
   ensureDirExists(folderPath);
 
   return UseInterceptors(
-    FileInterceptor('file', {
+    FileInterceptor(fieldName, {
       storage: diskStorage({
         destination: (_req, _file, cb) => cb(null, folderPath),
         filename: (_req, file, cb) => {

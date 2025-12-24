@@ -49,6 +49,11 @@ export class CareerController {
     return this.careerService.careerHome();
   }
 
+  @Get('list')
+  careerList() {
+    return this.careerService.careerList();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.careerService.findOne(id);

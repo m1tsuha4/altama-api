@@ -12,6 +12,7 @@ import { InstagramModule } from './instagram/instagram.module';
 import { ArticleModule } from './article/article.module';
 import { EventModule } from './event/event.module';
 import { CareerModule } from './career/career.module';
+import { ApplicationModule } from './application/application.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CareerModule } from './career/career.module';
     ArticleModule,
     EventModule,
     CareerModule,
+    ApplicationModule,
   ],
   controllers: [AppController],
   providers: [
