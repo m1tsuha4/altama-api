@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCareerDto } from './dto/create-career.dto';
 import { UpdateCareerDto } from './dto/update-career.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -54,7 +54,7 @@ export class CareerService {
   }
 
   async findOne(id: string) {
-    return this.prisma.career.findUnique({
+    const career = await this.prisma.career.findUnique({
       where: { id },
       select: {
         id: true,
@@ -72,6 +72,11 @@ export class CareerService {
         },
       },
     });
+
+    if (!career) {
+      throw new BadRequestException('Career not found');
+    }
+    return career;
   }
 
   async update(id: string, updateCareerDto: UpdateCareerDto) {
