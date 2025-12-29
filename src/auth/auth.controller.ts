@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   UnauthorizedException,
@@ -58,7 +59,7 @@ export class AuthController {
     description: 'Validate Token successfully',
     type: ResponseLoginDto,
   })
-  @Post('validate-token')
+  @Get('validate-token')
   async validateToken(@User() user) {
     return {
       valid: true,
