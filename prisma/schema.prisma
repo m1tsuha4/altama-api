@@ -36,7 +36,8 @@ model TokenBlacklist {
 model Career {
   id        String    @id @default(cuid())
   title     String?
-  overview  String
+  overview  String?
+  link      String?
   location  String?
   type      String?
   date      DateTime?

@@ -3,7 +3,8 @@ import z from "zod";
 
 export const CreateCareerSchema = z.object({
     title: z.string().optional(),
-    overview: z.string().min(3).max(255),
+    overview: z.string().optional(),
+    link: z.string().optional(),
     location: z.string().optional(),
     type: z.string().optional(),
     date: z.coerce.date().optional(),
@@ -11,7 +12,7 @@ export const CreateCareerSchema = z.object({
     requirements: z.array(z.object({
         title: z.string(),
         description: z.string().optional(),
-    })),
+    })).optional(),
 });
 
 export class CreateCareerDto extends createZodDto(CreateCareerSchema) {}

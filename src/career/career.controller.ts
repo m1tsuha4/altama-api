@@ -18,6 +18,7 @@ export class CareerController {
       properties: {
         title: { type: 'string', example: 'Modern Market Coordinator Staff' },
         overview: { type: 'string', example: 'Posisi ini bertanggung jawab mengelola hubungan dengan modern market serta memastikan pencapaian target penjualan di area yang ditugaskan.' },
+        link: { type: 'string', example: 'https://example.com/career/123' },
         location: { type: 'string', example: 'Jakarta' },
         type: { type: 'string', example: 'Fulltime' },
         date: { type: 'string', example: '2025-12-24' },
@@ -67,6 +68,7 @@ export class CareerController {
       properties: {
         title: { type: 'string', example: 'Modern Market Coordinator Staff' },
         overview: { type: 'string', example: 'Posisi ini bertanggung jawab mengelola hubungan dengan modern market serta memastikan pencapaian target penjualan di area yang ditugaskan.' },
+        link: { type: 'string', example: 'https://example.com/career/123' },
         location: { type: 'string', example: 'Jakarta' },
         type: { type: 'string', example: 'Fulltime' },
         date: { type: 'string', example: '2025-12-24' },

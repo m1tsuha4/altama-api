@@ -12,13 +12,14 @@ export class CareerService {
       data: {
         title: createCareerDto.title,
         overview: createCareerDto.overview,
+        link: createCareerDto.link,
         location: createCareerDto.location,
         type: createCareerDto.type,
         date: createCareerDto.date,
       }
     });
 
-    if (createCareerDto.requirements.length > 0) {
+    if (createCareerDto.requirements && createCareerDto.requirements.length > 0) {
       await this.prisma.requirement.createMany({
         data: createCareerDto.requirements.map((requirement) => ({
           careerId: career.id,
@@ -36,6 +37,7 @@ export class CareerService {
         id: true,
         title: true,
         overview: true,
+        link: true,
         location: true,
         type: true,
         date: true,
@@ -59,6 +61,7 @@ export class CareerService {
         id: true,
         title: true,
         overview: true,
+        link: true,
       },
     });
   }
@@ -68,6 +71,7 @@ export class CareerService {
       select: {
         id: true,
         title: true,
+        link: true,
       },
     });
   }
@@ -79,6 +83,7 @@ export class CareerService {
         id: true,
         title: true,
         overview: true,
+        link: true,
         location: true,
         type: true,
         date: true,
@@ -104,6 +109,7 @@ export class CareerService {
       data: {
         title: updateCareerDto.title,
         overview: updateCareerDto.overview,
+        link: updateCareerDto.link,
         location: updateCareerDto.location,
         type: updateCareerDto.type,
         date: updateCareerDto.date,
