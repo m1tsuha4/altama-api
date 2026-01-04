@@ -13,6 +13,7 @@ import { ArticleModule } from './article/article.module';
 import { EventModule } from './event/event.module';
 import { CareerModule } from './career/career.module';
 import { ApplicationModule } from './application/application.module';
+import { CategoryArticleModule } from './category-article/category-article.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ApplicationModule } from './application/application.module';
     EventModule,
     CareerModule,
     ApplicationModule,
+    CategoryArticleModule,
   ],
   controllers: [AppController],
   providers: [
