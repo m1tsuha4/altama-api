@@ -227,4 +227,36 @@ export class ArticleService {
     }
     return await this.prisma.article.delete({ where: { id } });
   }
+
+  async search(query: string) {
+    return await this.prisma.article.findMany({
+      where: {
+        OR: [
+          { title: { contains: query, mode: 'insensitive' } },
+          { excerpt: { contains: query, mode: 'insensitive' } },
+          { contentHtml: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+      select: {
+        id: true,
+        title: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        slug: true,
+        excerpt: true,
+        contentHtml: true,
+        primaryImage: true,
+        seoTitle: true,
+        seoDescription: true,
+        seoKeywords: true,
+        metaTags: true,
+        author: true,
+        publishedAt: true,
+      },
+    });
+  }
 }

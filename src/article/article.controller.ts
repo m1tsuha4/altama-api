@@ -92,6 +92,11 @@ export class ArticleController {
     return this.articleService.findAllImageArticle();
   }
 
+  @Get('search/:query')
+  search(@Param('query') query: string) {
+    return this.articleService.search(query);
+  }
+
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @UploadImageInterceptor('article-image')
