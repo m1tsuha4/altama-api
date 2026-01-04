@@ -3,6 +3,7 @@ import z from 'zod';
 
 export const CreateArticleSchema = z.object({
   title: z.string(),
+  categoryId: z.string(),
   slug: z.string().optional(),
   excerpt: z.string().optional(),
   contentHtml: z.string(),

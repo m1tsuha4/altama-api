@@ -49,6 +49,12 @@ export class ArticleService {
       select: {
         id: true,
         title: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         slug: true,
         excerpt: true,
         contentHtml: true,
@@ -107,6 +113,12 @@ export class ArticleService {
       select: {
         id: true,
         title: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         slug: true,
         excerpt: true,
         contentHtml: true,
@@ -131,6 +143,12 @@ export class ArticleService {
       select: {
         id: true,
         title: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         slug: true,
         excerpt: true,
         contentHtml: true,

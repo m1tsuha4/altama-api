@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CareerService {
-  constructor (private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createCareerDto: CreateCareerDto) {
     const career = await this.prisma.career.create({
@@ -16,10 +16,13 @@ export class CareerService {
         location: createCareerDto.location,
         type: createCareerDto.type,
         date: createCareerDto.date,
-      }
+      },
     });
 
-    if (createCareerDto.requirements && createCareerDto.requirements.length > 0) {
+    if (
+      createCareerDto.requirements &&
+      createCareerDto.requirements.length > 0
+    ) {
       await this.prisma.requirement.createMany({
         data: createCareerDto.requirements.map((requirement) => ({
           careerId: career.id,
@@ -118,7 +121,7 @@ export class CareerService {
 
     if (updateCareerDto.requirements) {
       await this.prisma.requirement.deleteMany({ where: { careerId: id } });
-      
+
       if (updateCareerDto.requirements.length > 0) {
         await this.prisma.requirement.createMany({
           data: updateCareerDto.requirements.map((requirement) => ({

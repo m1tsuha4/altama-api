@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { CareerService } from './career.service';
 import { CreateCareerDto, CreateCareerSchema } from './dto/create-career.dto';
 import { UpdateCareerDto, UpdateCareerSchema } from './dto/update-career.dto';
@@ -17,7 +26,11 @@ export class CareerController {
       type: 'object',
       properties: {
         title: { type: 'string', example: 'Modern Market Coordinator Staff' },
-        overview: { type: 'string', example: 'Posisi ini bertanggung jawab mengelola hubungan dengan modern market serta memastikan pencapaian target penjualan di area yang ditugaskan.' },
+        overview: {
+          type: 'string',
+          example:
+            'Posisi ini bertanggung jawab mengelola hubungan dengan modern market serta memastikan pencapaian target penjualan di area yang ditugaskan.',
+        },
         link: { type: 'string', example: 'https://example.com/career/123' },
         location: { type: 'string', example: 'Jakarta' },
         type: { type: 'string', example: 'Fulltime' },
@@ -28,7 +41,10 @@ export class CareerController {
             type: 'object',
             properties: {
               title: { type: 'string', example: 'Bachelor Degree' },
-              description: { type: 'string', example: 'Bachelor Degree in Business Administration' },
+              description: {
+                type: 'string',
+                example: 'Bachelor Degree in Business Administration',
+              },
             },
           },
         },
@@ -36,7 +52,10 @@ export class CareerController {
     },
   })
   @Post()
-  create(@Body(new ZodValidationPipe(CreateCareerSchema)) createCareerDto: CreateCareerDto) {
+  create(
+    @Body(new ZodValidationPipe(CreateCareerSchema))
+    createCareerDto: CreateCareerDto,
+  ) {
     return this.careerService.create(createCareerDto);
   }
 
@@ -67,7 +86,11 @@ export class CareerController {
       type: 'object',
       properties: {
         title: { type: 'string', example: 'Modern Market Coordinator Staff' },
-        overview: { type: 'string', example: 'Posisi ini bertanggung jawab mengelola hubungan dengan modern market serta memastikan pencapaian target penjualan di area yang ditugaskan.' },
+        overview: {
+          type: 'string',
+          example:
+            'Posisi ini bertanggung jawab mengelola hubungan dengan modern market serta memastikan pencapaian target penjualan di area yang ditugaskan.',
+        },
         link: { type: 'string', example: 'https://example.com/career/123' },
         location: { type: 'string', example: 'Jakarta' },
         type: { type: 'string', example: 'Fulltime' },
@@ -78,7 +101,10 @@ export class CareerController {
             type: 'object',
             properties: {
               title: { type: 'string', example: 'Bachelor Degree' },
-              description: { type: 'string', example: 'Bachelor Degree in Business Administration' },
+              description: {
+                type: 'string',
+                example: 'Bachelor Degree in Business Administration',
+              },
             },
           },
         },
@@ -86,7 +112,11 @@ export class CareerController {
     },
   })
   @Patch(':id')
-  update(@Param('id') id: string, @Body(new ZodValidationPipe(UpdateCareerSchema)) updateCareerDto: UpdateCareerDto) {
+  update(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(UpdateCareerSchema))
+    updateCareerDto: UpdateCareerDto,
+  ) {
     return this.careerService.update(id, updateCareerDto);
   }
 

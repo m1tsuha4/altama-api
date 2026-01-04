@@ -7,9 +7,12 @@ import { existsSync, unlinkSync } from 'fs';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private readonly prisma: PrismaService){}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(createApplicationDto: CreateApplicationDto, file?: Express.Multer.File) {
+  async create(
+    createApplicationDto: CreateApplicationDto,
+    file?: Express.Multer.File,
+  ) {
     return this.prisma.application.create({
       data: {
         ...createApplicationDto,
@@ -21,30 +24,30 @@ export class ApplicationService {
   async findAll() {
     return this.prisma.application.findMany({
       select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          location: true,
-          education: true,
-          experience: true,
-          skills: true,
-          portfolio: true,
-          cv: true,
-          certificate: true,
-          language: true,
-          salary: true,
-          available: true,
-          career: {
-            select: {
-              id: true,
-              title: true,
-            },
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        location: true,
+        education: true,
+        experience: true,
+        skills: true,
+        portfolio: true,
+        cv: true,
+        certificate: true,
+        language: true,
+        salary: true,
+        available: true,
+        career: {
+          select: {
+            id: true,
+            title: true,
           },
         },
-        orderBy: {
-          createdAt: 'desc',
-        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -52,22 +55,22 @@ export class ApplicationService {
     const application = await this.prisma.application.findUnique({
       where: { id },
       select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          location: true,
-          education: true,
-          experience: true,
-          skills: true,
-          portfolio: true,
-          cv: true,
-          certificate: true,
-          language: true,
-          salary: true,
-          available: true,
-          careerId: true,
-        },
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        location: true,
+        education: true,
+        experience: true,
+        skills: true,
+        portfolio: true,
+        cv: true,
+        certificate: true,
+        language: true,
+        salary: true,
+        available: true,
+        careerId: true,
+      },
     });
 
     if (!application) {
@@ -76,7 +79,11 @@ export class ApplicationService {
     return application;
   }
 
- async update(id: string, updateApplicationDto: UpdateApplicationDto, file?: Express.Multer.File) {
+  async update(
+    id: string,
+    updateApplicationDto: UpdateApplicationDto,
+    file?: Express.Multer.File,
+  ) {
     const application = await this.findOne(id);
 
     const uploadRoot = join(process.cwd(), 'uploads', 'cv');
