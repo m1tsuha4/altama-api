@@ -80,8 +80,19 @@ model Application {
   updatedAt   DateTime @updatedAt
 }
 
+model CategoryArticle {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  articles  Article[]
+}
+
 model Article {
   id             String    @id @default(cuid())
+  categoryId     String
+  category       CategoryArticle @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   title          String
   slug           String    @unique
   excerpt        String?   @db.Text
