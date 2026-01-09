@@ -232,9 +232,9 @@ export class ArticleService {
     return await this.prisma.article.findMany({
       where: {
         OR: [
-          { title: { contains: query, mode: 'insensitive' } },
-          { excerpt: { contains: query, mode: 'insensitive' } },
-          { contentHtml: { contains: query, mode: 'insensitive' } },
+          { title: { contains: query } },
+          { excerpt: { contains: query } },
+          { contentHtml: { contains: query } },
         ],
       },
       select: {
