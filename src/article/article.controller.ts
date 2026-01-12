@@ -129,6 +129,11 @@ export class ArticleController {
     return this.articleService.findLatestArticle();
   }
 
+  @Get('slug/:slug')
+  findBySlug(@Param('slug') slug: string) {
+    return this.articleService.findBySlug(slug);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.articleService.findOne(id);

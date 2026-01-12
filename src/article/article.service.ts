@@ -167,6 +167,35 @@ export class ArticleService {
     return article;
   }
 
+  async findBySlug(slug: string) {
+    const article = await this.prisma.article.findUnique({ where: { slug },
+     select: {
+        id: true,
+        title: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        slug: true,
+        excerpt: true,
+        contentHtml: true,
+        primaryImage: true,
+        seoTitle: true,
+        seoDescription: true,
+        seoKeywords: true,
+        metaTags: true,
+        author: true,
+        publishedAt: true,
+      }, 
+    });
+    if (!article) {
+      throw new BadRequestException('Article not found');
+    }
+    return article;
+  }
+
   async update(
     id: string,
     updateArticleDto: UpdateArticleDto,
