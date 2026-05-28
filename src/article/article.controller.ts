@@ -37,7 +37,10 @@ export class ArticleController {
       type: 'object',
       properties: {
         title: { type: 'string', example: 'Tekiro Mechanic Competition 2023' },
-        categoryId: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174000' },
+        categoryId: {
+          type: 'string',
+          example: '123e4567-e89b-12d3-a456-426614174000',
+        },
         excerpt: {
           type: 'string',
           example:
@@ -148,7 +151,10 @@ export class ArticleController {
       type: 'object',
       properties: {
         title: { type: 'string', example: 'Tekiro Mechanic Competition 2023' },
-        categoryId: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174000' },
+        categoryId: {
+          type: 'string',
+          example: '123e4567-e89b-12d3-a456-426614174000',
+        },
         excerpt: {
           type: 'string',
           example:

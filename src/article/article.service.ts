@@ -168,8 +168,9 @@ export class ArticleService {
   }
 
   async findBySlug(slug: string) {
-    const article = await this.prisma.article.findUnique({ where: { slug },
-     select: {
+    const article = await this.prisma.article.findUnique({
+      where: { slug },
+      select: {
         id: true,
         title: true,
         category: {
@@ -188,7 +189,7 @@ export class ArticleService {
         metaTags: true,
         author: true,
         publishedAt: true,
-      }, 
+      },
     });
     if (!article) {
       throw new BadRequestException('Article not found');
